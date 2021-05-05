@@ -5,16 +5,20 @@ class Order extends React.Component {
     const fish = this.props.fishes[key];
     const isAvailable = fish && fish.status === "available";
     const count = this.props.order[key];
+    if (!fish) return null;
     if (!isAvailable) {
       return (
-        <li key={key}>{fish ? fish.name : "fish"} is no longer available</li>
+        <span key={key}>
+          {fish ? fish.name : "fish"} is no longer available
+        </span>
       );
     }
     return (
-      <li key={key}>
+      <span key={key}>
         {count} lbs {fish.name}
         {formatPrice(count * fish.price)}
-      </li>
+        <button onClick={() => this.props.deleteOrder(key)}>&times;</button>
+      </span>
     );
   };
   render() {
@@ -34,7 +38,7 @@ class Order extends React.Component {
         <h2>Order</h2>
         <ul className="order">
           {orderIds.map((key) => (
-            <li>{this.renderOrder(key)}</li>
+            <li key={key}>{this.renderOrder(key)}</li>
           ))}
         </ul>
         <div className="total">
